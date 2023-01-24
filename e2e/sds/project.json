@@ -1,0 +1,15 @@
+{
+  "name": "sds",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "e2e/sds/src",
+  "targets": {
+    "build": {
+      "executor": "@zonocloud/nx-lbv4:build"
+    },
+    "serve": {
+      "executor": "@zonocloud/nx-lbv4:serve"
+    }
+  },
+  "tags": []
+}

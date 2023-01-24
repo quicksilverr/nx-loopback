@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "App",
+  "title": "",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use?"
+    },
+    "applicationClassName": {
+      "type": "string",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      },
+      "x-prompt": "What is the application class name?"
+    },
+    "description": {
+      "type": "string",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 2
+      },
+      "x-prompt": "Application description"
+    },
+    "applicationFeatures": {
+      
+      "description": "Select features to be enabled in this project?",
+      "$default": {
+        "$source": "argv",
+        "index": 3
+      },
+      "type": "array",
+    "items": {
+        "type": "string"
+    },
+    "uniqueItems": true,
+      "default": ["docker","repositories","services","apiconnect"],
+      "x-prompt": {
+        "message": "Enable which features? ",
+        "type": "list",
+        "items": [
+          {
+           "value":"docker",
+           "label":"Enable docker: include Dockerfile and .dockerignore"
+          },
+          {
+            "value":"repositories",
+            
+            "label":"Enable repositories: include repository imports and RepositoryMixin"
+          },
+          {
+            "value":"services",
+            "label": "Enable services: include service-proxy imports and ServiceMixin"
+           },
+           {
+            "value":"apiconnect",
+            "label": "Enable Api Connect: include Api Connect"
+           }
+        ],
+        "multiselect":true
+      }
+    },
+    
+    "tags": {
+      "type": "string",
+      "description": "Add tags to the project (used for linting)",
+      "alias": "t"
+    }, 
+    "directory": {
+      "type": "string",
+      "description": "A directory where the project is placed"
+    }
+  },
+  "required": ["name"]
+}
