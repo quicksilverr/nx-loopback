@@ -5,6 +5,11 @@
   "title": "Build executor",
   "description": "",
   "type": "object",
-  "properties": {},
+  "properties": {
+    "clean": {
+      "type": "boolean",
+      "description": "Clean the dist files"
+    }
+  },
   "required": []
 }

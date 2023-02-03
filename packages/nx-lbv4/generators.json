@@ -3,10 +3,10 @@
   "name": "nx-lbv4",
   "version": "0.0.1",
   "generators": {
-    "nx-lbv4": {
-      "factory": "./src/generators/nx-lbv4/generator",
-      "schema": "./src/generators/nx-lbv4/schema.json",
-      "description": "nx-lbv4 generator"
+    "app": {
+      "factory": "./src/generators/app/generator",
+      "schema": "./src/generators/app/schema.json",
+      "description": "Generate the loopback application"
     }
   }
 }

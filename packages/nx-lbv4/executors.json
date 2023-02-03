@@ -4,7 +4,22 @@
     "build": {
       "implementation": "./src/executors/build/executor",
       "schema": "./src/executors/build/schema.json",
-      "description": "build executor"
+      "description": "To build the loopback application"
+    },
+    "serve": {
+      "implementation": "./src/executors/serve/executor",
+      "schema": "./src/executors/serve/schema.json",
+      "description": "Execute and run the build"
+    },
+    "clean": {
+      "implementation": "./src/executors/clean/executor",
+      "schema": "./src/executors/clean/schema.json",
+      "description": "Cleans the build"
+    },
+    "watch": {
+      "implementation": "./src/executors/watch/executor",
+      "schema": "./src/executors/watch/schema.json",
+      "description": "serve and auto reload on file changes"
     }
   }
 }
