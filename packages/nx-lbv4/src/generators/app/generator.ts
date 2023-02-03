@@ -5,6 +5,7 @@ import {
   formatFiles,
   generateFiles,
   getWorkspaceLayout,
+  joinPathFragments,
   names,
   offsetFromRoot,
   Tree,
@@ -40,7 +41,7 @@ function normalizeOptions(
     ? options.tags.split(',').map((s) => s.trim())
     : [];
   const packageManager = detectPackageManager();
-  const features = options.applicationFeatures.map((val) => val.value);
+
   return {
     ...options,
     projectName,
@@ -49,7 +50,6 @@ function normalizeOptions(
     parsedTags,
     applicationClassName,
     packageManager,
-    features,
     appClassWithMixins,
   };
 }
@@ -60,6 +60,7 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
     ...names(options.name),
     offsetFromRoot: offsetFromRoot(options.projectRoot),
     template: '',
+    ejs: '',
   };
   generateFiles(
     tree,
@@ -85,6 +86,7 @@ const addDependencies = (tree: Tree) => {
     '@loopback/testlab': '^5.0.7',
     '@types/node': '^14.18.36',
     '@loopback/eslint-config': '^13.0.7',
+    'tsc-watch': '6.0.0',
     eslint: '^8.30.0',
     typescript: '~4.9.4',
   };
@@ -92,7 +94,7 @@ const addDependencies = (tree: Tree) => {
 };
 
 const buildAppClassMixins = (options: AppGeneratorSchema) => {
-  const features = options.applicationFeatures.map((val) => val.value);
+  const features = options.applicationFeatures;
   if (!features.includes('repositories') && !features.includes('services'))
     return;
 
@@ -107,6 +109,16 @@ const buildAppClassMixins = (options: AppGeneratorSchema) => {
   return appClassWithMixins;
 };
 
+const deleteFiles = (tree: Tree, options: NormalizedSchema) => {
+  if (!options.applicationFeatures.includes('docker')) {
+    tree.delete(joinPathFragments(options.projectRoot, 'Dockerfile'));
+    tree.delete(joinPathFragments(options.projectRoot, '.dockerignore'));
+  }
+  if (!options.applicationFeatures.includes('repositories')) {
+    tree.delete(joinPathFragments('src/migrate.ts.ejs'));
+  }
+};
+
 export default async function (tree: Tree, options: AppGeneratorSchema) {
   const normalizedOptions = normalizeOptions(tree, options);
   addProjectConfiguration(tree, normalizedOptions.projectName, {
@@ -115,15 +127,22 @@ export default async function (tree: Tree, options: AppGeneratorSchema) {
     sourceRoot: `${normalizedOptions.projectRoot}/src`,
     targets: {
       build: {
-        executor: '@zonocloud/nx-lbv4:build',
+        executor: `@${getWorkspaceLayout(tree).npmScope}/nx-lbv4:build`,
       },
       serve: {
-        executor: '@zonocloud/nx-lbv4:serve',
+        executor: `@${getWorkspaceLayout(tree).npmScope}/nx-lbv4:serve`,
+      },
+      clean: {
+        executor: `@${getWorkspaceLayout(tree).npmScope}/nx-lbv4:clean`,
+      },
+      watch: {
+        executor: `@${getWorkspaceLayout(tree).npmScope}/nx-lbv4:watch`,
       },
     },
     tags: normalizedOptions.parsedTags,
   });
   addDependencies(tree);
   addFiles(tree, normalizedOptions);
+  deleteFiles(tree, normalizedOptions);
   await formatFiles(tree);
 }

@@ -1,0 +1,21 @@
+{
+  "name": "test",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "e2e/test/src",
+  "targets": {
+    "build": {
+      "executor": "@nx-loopback/nx-lbv4:build"
+    },
+    "serve": {
+      "executor": "@nx-loopback/nx-lbv4:serve"
+    },
+    "clean": {
+      "executor": "@nx-loopback/nx-lbv4:clean"
+    },
+    "watch":{
+      "executor": "@nx-loopback/nx-lbv4:watch"
+    }
+  },
+  "tags": []
+}
