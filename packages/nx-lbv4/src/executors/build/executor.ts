@@ -29,8 +29,14 @@ const buildLoopbackApp = (
   context: ExecutorContext
 ) => {
   const command = 'lb-tsc';
+  const env = Object(process.env);
+  const NODE_ENV = options.nodeEnvironment;
   execSync(command, {
     stdio: 'inherit',
     cwd: getCwd(context),
+    env: {
+      ...env,
+      NODE_ENV,
+    },
   });
 };

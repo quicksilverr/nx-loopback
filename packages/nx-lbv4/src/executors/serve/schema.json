@@ -5,6 +5,42 @@
   "title": "Serve executor",
   "description": "",
   "type": "object",
-  "properties": {},
+  "properties": {
+    "nodeEnvironment": {
+      "description": "The node environment for the application. Like local,stage,etc.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "type": "array",
+    "items": {
+        "type": "string"
+    },
+    "uniqueItems": true,
+      "default": ["LOCAL"],
+      "x-prompt": {
+        "message": "Please select the node environment?",
+        "type": "list",
+        "items": [
+          {
+           "value":"PROD",
+           "label":"Production Environment"
+          },
+          {
+            "value":"QA",
+            "label":"Stage Environment"
+          },
+          {
+            "value":"LOCAL",
+            "label": "Local Environment"
+           },
+           {
+            "value":"SL",
+            "label": "Stage Local Environment"
+           }
+        ]
+      }
+    }
+  },
   "required": []
 }

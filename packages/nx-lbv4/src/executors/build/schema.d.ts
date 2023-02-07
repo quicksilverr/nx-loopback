@@ -1,3 +1,4 @@
 export interface BuildExecutorSchema {
-    clean:boolean;
+  clean: boolean;
+  nodeEnvironment?: string;
 } // eslint-disable-line

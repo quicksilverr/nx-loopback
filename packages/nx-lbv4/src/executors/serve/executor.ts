@@ -13,14 +13,14 @@ export default async function runExecutor(
   const buildResult = await build({ clean: true }, context);
   if (buildResult.success) {
     console.log(`\n> nx run ${projectName}:serve`);
-    await runNode(context);
+    await runNode(context, options);
     return { success: true };
   }
 }
 
-const runNode = (context: ExecutorContext) => {
+const runNode = (context: ExecutorContext, options: ServeExecutorSchema) => {
   const observable = new Observable<any>((observer) => {
-    const pid = runProcess(context);
+    const pid = runProcess(context, options);
     if (pid !== undefined) return observer.next({ success: true });
 
     return observer.next({ success: false });
@@ -29,9 +29,9 @@ const runNode = (context: ExecutorContext) => {
   return lastValueFrom(observable);
 };
 
-const runProcess = (context: ExecutorContext) => {
+const runProcess = (context: ExecutorContext, options: ServeExecutorSchema) => {
   const env = Object(process.env);
-  const NODE_ENV = 'development';
+  const NODE_ENV = options.nodeEnvironment;
   const command = ['-r', 'source-map-support/register', 'dist/index.js'];
 
   const child = fork(getCwd(context), {
