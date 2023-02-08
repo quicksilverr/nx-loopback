@@ -10,7 +10,10 @@ export default async function runExecutor(
   context: ExecutorContext
 ) {
   const projectName = context.projectName;
-  const buildResult = await build({ clean: true }, context);
+  const buildResult = await build(
+    { clean: true, nodeEnvironment: options.nodeEnvironment },
+    context
+  );
   if (buildResult.success) {
     console.log(`\n> nx run ${projectName}:serve`);
     await runNode(context, options);
@@ -32,6 +35,7 @@ const runNode = (context: ExecutorContext, options: ServeExecutorSchema) => {
 const runProcess = (context: ExecutorContext, options: ServeExecutorSchema) => {
   const env = Object(process.env);
   const NODE_ENV = options.nodeEnvironment;
+
   const command = ['-r', 'source-map-support/register', 'dist/index.js'];
 
   const child = fork(getCwd(context), {

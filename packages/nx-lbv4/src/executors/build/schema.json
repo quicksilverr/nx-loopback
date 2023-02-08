@@ -21,7 +21,7 @@
         "type": "string"
     },
     "uniqueItems": true,
-      "default": ["LOCAL"],
+      "default": "LOCAL",
       "x-prompt": {
         "message": "Please select the node environment?",
         "type": "list",
