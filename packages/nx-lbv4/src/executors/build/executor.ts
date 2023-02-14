@@ -1,6 +1,7 @@
 import { BuildExecutorSchema } from './schema';
-import { ExecutorContext, Tree } from '@nrwl/devkit';
+import { ExecutorContext, createPackageJson } from '@nrwl/devkit';
 import { execSync } from 'child_process';
+import { writeJsonFile } from '@nrwl/devkit';
 import clean from '../clean/executor';
 import { getCwd } from '../../utils/getCwd';
 
@@ -18,8 +19,15 @@ export default async function runExecutor(
       return { success: true };
     }
   } else {
-    console.log(`\n> nx run ${projectName}:build`);
+    console.log(`\n> nx run ${projectName}:build ${getCwd(context)}`);
+    const packageJson = createPackageJson(projectName, context.projectGraph, {
+      root: context.root,
+    });
     buildLoopbackApp(options, context);
+    writeJsonFile(`${getCwd(context)}/dist/package.json`, packageJson, {
+      appendNewLine: true,
+      spaces: 2,
+    });
     return { success: true };
   }
 }
