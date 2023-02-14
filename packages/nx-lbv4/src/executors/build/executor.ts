@@ -20,14 +20,7 @@ export default async function runExecutor(
     }
   } else {
     console.log(`\n> nx run ${projectName}:build ${getCwd(context)}`);
-    const packageJson = createPackageJson(projectName, context.projectGraph, {
-      root: context.root,
-    });
     buildLoopbackApp(options, context);
-    writeJsonFile(`${getCwd(context)}/dist/package.json`, packageJson, {
-      appendNewLine: true,
-      spaces: 2,
-    });
     return { success: true };
   }
 }
@@ -47,4 +40,17 @@ const buildLoopbackApp = (
       NODE_ENV,
     },
   });
+  if (options.generatePackageJson) {
+    const packageJson = createPackageJson(
+      context.projectName,
+      context.projectGraph,
+      {
+        root: context.root,
+      }
+    );
+    writeJsonFile(`${getCwd(context)}/dist/package.json`, packageJson, {
+      appendNewLine: true,
+      spaces: 2,
+    });
+  }
 };

@@ -7,8 +7,22 @@
   "type": "object",
   "properties": {
     "clean": {
+      "$default": {
+        "$source": "argv",
+        "index": 2
+      },
+      "default":false,
       "type": "boolean",
       "description": "Clean the dist files"
+    },
+    "generatePackageJson": {
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      },
+      "default": true,
+      "type": "boolean",
+      "description": "generate package json in dist folder"
     },
     "nodeEnvironment": {
       "description": "The node environment for the application. Like local,stage,etc.",
