@@ -1,1 +1,3 @@
-export interface ServeWatchExecutorSchema {} // eslint-disable-line
+export interface ServeWatchExecutorSchema {
+  nodeEnvironment?: string;
+} // eslint-disable-line

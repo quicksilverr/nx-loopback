@@ -7,8 +7,57 @@
   "type": "object",
   "properties": {
     "clean": {
+      "$default": {
+        "$source": "argv",
+        "index": 2
+      },
+      "default":false,
       "type": "boolean",
       "description": "Clean the dist files"
+    },
+    "generatePackageJson": {
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      },
+      "default": true,
+      "type": "boolean",
+      "description": "generate package json in dist folder"
+    },
+    "nodeEnvironment": {
+      "description": "The node environment for the application. Like local,stage,etc.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "type": "string",
+    "items": {
+        "type": "string"
+    },
+    "uniqueItems": true,
+      "default": "LOCAL",
+      "x-prompt": {
+        "message": "Please select the node environment?",
+        "type": "list",
+        "items": [
+          {
+           "value":"PROD",
+           "label":"Production Environment"
+          },
+          {
+            "value":"QA",
+            "label":"Stage Environment"
+          },
+          {
+            "value":"LOCAL",
+            "label": "Local Environment"
+           },
+           {
+            "value":"SL",
+            "label": "Stage Local Environment"
+           }
+        ]
+      }
     }
   },
   "required": []

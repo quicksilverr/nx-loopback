@@ -33,7 +33,6 @@
       "x-prompt": "Application description"
     },
     "applicationFeatures": {
-      
       "description": "Select features to be enabled in this project?",
       "$default": {
         "$source": "argv",
@@ -81,5 +80,5 @@
       "description": "A directory where the project is placed"
     }
   },
-  "required": ["name"]
+  "required": ["name","description"]
 }
