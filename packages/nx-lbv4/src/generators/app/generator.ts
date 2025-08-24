@@ -127,16 +127,16 @@ export default async function (tree: Tree, options: AppGeneratorSchema) {
     sourceRoot: `${normalizedOptions.projectRoot}/src`,
     targets: {
       build: {
-        executor: `@${getWorkspaceLayout(tree).npmScope}/nx-lbv4:build`,
+        executor: `nx-loopback:build`,
       },
       serve: {
-        executor: `@${getWorkspaceLayout(tree).npmScope}/nx-lbv4:serve`,
+        executor: `nx-loopback:serve`,
       },
       clean: {
-        executor: `@${getWorkspaceLayout(tree).npmScope}/nx-lbv4:clean`,
+        executor: `nx-loopback:clean`,
       },
       watch: {
-        executor: `@${getWorkspaceLayout(tree).npmScope}/nx-lbv4:watch`,
+        executor: `nx-loopback:watch`,
       },
     },
     tags: normalizedOptions.parsedTags,

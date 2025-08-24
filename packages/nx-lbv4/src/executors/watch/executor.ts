@@ -17,13 +17,17 @@ export default async function runExecutor(
 ) {
   const watch = new TscWatchClient();
 
-  await runWatchNode(watch, context);
+  await runWatchNode(watch, context, options);
   return {
     success: true,
   };
 }
 
-const runWatchNode = (stream: TscWatchClient, context: ExecutorContext) => {
+const runWatchNode = (
+  stream: TscWatchClient,
+  context: ExecutorContext,
+  options: ServeWatchExecutorSchema
+) => {
   const projectCwd = getCwd(context);
   return new Promise((resolve, reject) => {
     stream.on(W.STARTED, (args) => {
@@ -42,12 +46,10 @@ const runWatchNode = (stream: TscWatchClient, context: ExecutorContext) => {
     });
 
     stream.on(W.ERR, (err) => {
-      console.log('err', err);
-      reject('something went wrong');
+      console.log('something went wrong');
     });
 
     readline.emitKeypressEvents(process.stdin);
-
     process.stdin.on('keypress', (str, key) => {
       if (key.name == 'escape' || (key && key.ctrl && key.name == 'c')) {
         stream.kill();
@@ -61,11 +63,18 @@ const runWatchNode = (stream: TscWatchClient, context: ExecutorContext) => {
       }
     });
 
+    const env = Object(process.env);
+    const NODE_ENV = options.nodeEnvironment;
+    process.env = {
+      ...env,
+      NODE_ENV,
+    };
+
     process.stdin.setRawMode(true);
     process.stdin.resume();
 
     const tsConfigPath = `${projectCwd}/tsconfig.json`;
-    const onSuccess = `node -r source-map-support/register ${projectCwd}/dist/index.js`;
+    const onSuccess = ` node -r source-map-support/register ${projectCwd}/dist/index.js`;
     const lbtscPath = `${context.cwd}/node_modules/.bin/lb-tsc`;
 
     stream.start(
